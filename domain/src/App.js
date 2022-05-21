@@ -425,7 +425,7 @@ const App = () => {
         {mints && renderMints()}
 
         <div className="footer-container">
-          <a>CB Recruitment &copy;</a>
+          <div>The Mayfair &copy;</div>
         </div>
       </div>
     </div>
