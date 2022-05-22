@@ -7,7 +7,7 @@ import ethLogo from "./assets/ethlogo.png";
 import { networks } from "./utils/networks";
 
 const tld = ".mayfair";
-const CONTRACT_ADDRESS = "0x7242e9d0C7A4dBbeA7235B3695D1a300621B8B46";
+const CONTRACT_ADDRESS = "0x4b81AC0830fAB105284aaCC0e9d6EdedBA996f73";
 
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState("");
@@ -77,10 +77,10 @@ const App = () => {
   const switchNetwork = async () => {
     if (window.ethereum) {
       try {
-        // Try to switch to the Rinkeby testnet
+        // Try to switch to the Mumbai testnet
         await window.ethereum.request({
           method: "wallet_switchEthereumChain",
-          params: [{ chainId: "0x4" }], // Check networks.js for hexadecimal network ids
+          params: [{ chainId: "0x13881" }], // Check networks.js for hexadecimal network ids
         });
       } catch (error) {
         // This error code means that the chain we want has not been added to MetaMask
@@ -91,15 +91,15 @@ const App = () => {
               method: "wallet_addEthereumChain",
               params: [
                 {
-                  chainId: "0x4",
-                  chainName: "Rinkeby",
-                  rpcUrls: ["https://rinkeby.infura.io/v3/"],
+                  chainId: "0x13881",
+                  chainName: "Polygon Mumbai Testnet",
+                  rpcUrls: ["https://rpc-mumbai.maticvigil.com/"],
                   nativeCurrency: {
-                    name: "ETH",
-                    symbol: "Rinkeby Ether",
+                    name: "Mumbai Matic",
+                    symbol: "MATIC",
                     decimals: 18,
                   },
-                  blockExplorerUrls: ["https://rinkeby.etherscan.io/"],
+                  blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
                 },
               ],
             });
@@ -147,14 +147,16 @@ const App = () => {
         // Check if the transaction was successfully completed
         if (receipt.status === 1) {
           console.log(
-            "Domain minted! https://rinkeby.etherscan.io/tx/" + tx.hash
+            "Domain minted! https://mumbai.polygonscan.com/tx/" + tx.hash
           );
 
           // Set the record for the domain
           tx = await contract.setRecord(domain, record);
           await tx.wait();
 
-          console.log("Record set! https://rinkeby.etherscan.io/tx/" + tx.hash);
+          console.log(
+            "Record set! https://mumbai.polygonscan.com/tx/" + tx.hash
+          );
 
           // Call fetchMints after 2 seconds
           setTimeout(() => {
@@ -212,7 +214,7 @@ const App = () => {
 
   // This will run any time currentAccount or network are changed
   useEffect(() => {
-    if (network === "Rinkeby Test Network") {
+    if (network === "Polygon Mumbai Testnet") {
       fetchMints();
     }
   }, [currentAccount, network]);
@@ -236,7 +238,7 @@ const App = () => {
 
         let tx = await contract.setRecord(domain, record);
         await tx.wait();
-        console.log("Record set https://rinkeby.etherscan.io/tx/" + tx.hash);
+        console.log("Record set https://mumbai.polygonscan.com/tx/" + tx.hash);
 
         fetchMints();
         setRecord("");
@@ -263,10 +265,10 @@ const App = () => {
   );
 
   const renderInputForm = () => {
-    if (network !== "Rinkeby") {
+    if (network !== "Polygon Mumbai Testnet") {
       return (
         <div className="connect-wallet-container">
-          <h2>Please switch to Rinkeby Testnet</h2>
+          <h2>Please switch to Polygon Mumbai Testnet</h2>
           {/* This button will call our switch network function */}
           <button className="cta-button mint-button" onClick={switchNetwork}>
             Click here to switch
@@ -340,7 +342,7 @@ const App = () => {
                   <div className="mint-row">
                     <a
                       className="link"
-                      href={`https://testnets.opensea.io/assets/rinkeby/${CONTRACT_ADDRESS}/${mint.id}`}
+                      href={`https://testnets.opensea.io/assets/mumbai/${CONTRACT_ADDRESS}/${mint.id}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
